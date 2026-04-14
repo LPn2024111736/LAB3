@@ -7,8 +7,10 @@ class Dividir:
         self.res = 0
 
 
-    def execute(self)->Union[float,str]:
+    def execute(self,x:int, y:int)->Union[float,str]:
         try:
+            self.x = x
+            self.y = y
             self.res = self.x / self.y
         except ZeroDivisionError:
             return "error:dividing by zero"

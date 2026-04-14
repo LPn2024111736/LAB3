@@ -1,5 +1,5 @@
 import threading
-from servidor.operacoes import somar, subtrair, dividir
+from servidor.operacoes import somar, subtrair, dividir, multiplicar
 import servidor
 import json
 class ProcessaCliente(threading.Thread):
@@ -9,6 +9,8 @@ class ProcessaCliente(threading.Thread):
         self.address = address
         self.sum = somar.Somar()
         self.sub = subtrair.Subtrair()
+        self.div = dividir.Dividir()
+        self.mul = multiplicar.Multiplicar()
 
         # ---------------------- interaction with sockets ------------------------------
     def receive_int(self, connection, n_bytes: int) -> int:
@@ -67,11 +69,23 @@ class ProcessaCliente(threading.Thread):
                 result = self.sum.execute(x, y)
                 self.send_int(self.connection,result,servidor.INT_SIZE)
             elif request_type == servidor.SUB_OP:
-                x = self.receive_int(servidor.INT_SIZE)
-                y = self.receive_int(servidor.INT_SIZE)
+                x = self.receive_int(self.connection,servidor.INT_SIZE)
+                y = self.receive_int(self.connection,servidor.INT_SIZE)
                 print(f"[{self.address}] Subtrair: {x} - {y}")
                 result = self.sub.execute(x, y)
-                self.send_int(result, servidor.INT_SIZE)
+                self.send_int(self.connection,result, servidor.INT_SIZE)
+            elif request_type == servidor.MUL_OP:
+                x = self.receive_int(self.connection,servidor.INT_SIZE)
+                y = self.receive_int(self.connection,servidor.INT_SIZE)
+                print(f"[{self.address}] Multiplicar: {x} x {y}")
+                result = self.mul.execute(x, y)
+                self.send_int(self.connection,result, servidor.INT_SIZE)
+            elif request_type == servidor.DIV_OP:
+                x = self.receive_int(self.connection,servidor.INT_SIZE)
+                y = self.receive_int(self.connection,servidor.INT_SIZE)
+                print(f"[{self.address}] Dividir: {x} / {y}")
+                result = self.div.execute(x, y)
+                self.send_object(self.connection,result)
             elif request_type == servidor.END_OP:
                 last_request = True
                 print(self.address,"Thread terminada")

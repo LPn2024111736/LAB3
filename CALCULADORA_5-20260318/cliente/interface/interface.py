@@ -1,7 +1,6 @@
 import socket
 import json
 import cliente
-# PORT e SERVER ADDRESS
 
 class Interface:
 	#def __init__(self, maq:object):
@@ -53,20 +52,46 @@ class Interface:
 
 
 	def execute(self):
-		print("Qual é o cálculo que quer efetuar? x + - /")
-		res:str = input()
-		print("Preciso que introduza dois valores:")
-		x:int = int(input("x="))
-		y:int = int(input("y="))
+		while True:
+			print("Qual é o cálculo que quer efetuar? x + - / (= para terminar)")
+			res:str = input()
 
-		#x:float = float(input("x="))
-		#y:float = float(input("y="))
-		if res =="+":
-			self.send_str(self.connection,cliente.ADD_OP)
-			self.send_int(self.connection,x, cliente.INT_SIZE)
-			self.send_int(self.connection,y, cliente.INT_SIZE)
-			res = self.receive_int(self.connection,cliente.INT_SIZE)
-			print("O resultado da soma é:",res)
+			if res == "=":
+				self.send_str(self.connection, cliente.END_OP)
+				print("Terminando thread.")
+				self.connection.close()
+				break
+			print("Preciso que introduza dois valores:")
+			x:int = int(input("x="))
+			y:int = int(input("y="))
+
+			#x:float = float(input("x="))
+			#y:float = float(input("y="))
+			if res =="+":
+				self.send_str(self.connection,cliente.ADD_OP)
+				self.send_int(self.connection,x, cliente.INT_SIZE)
+				self.send_int(self.connection,y, cliente.INT_SIZE)
+				res = self.receive_int(self.connection,cliente.INT_SIZE)
+				print("O resultado da soma é:",res)
+			elif res =="-":
+				self.send_str(self.connection,cliente.SUB_OP)
+				self.send_int(self.connection,x, cliente.INT_SIZE)
+				self.send_int(self.connection,y, cliente.INT_SIZE)
+				res = self.receive_int(self.connection,cliente.INT_SIZE)
+				print("O resultado da subtração é:",res)
+			elif res == "x":
+				self.send_str(self.connection, cliente.MUL_OP)
+				self.send_int(self.connection, x, cliente.INT_SIZE)
+				self.send_int(self.connection, y, cliente.INT_SIZE)
+				res = self.receive_int(self.connection, cliente.INT_SIZE)
+				print("O resultado da multiplicação é:", res)
+			elif res == "/":
+				self.send_str(self.connection, cliente.DIV_OP)
+				self.send_int(self.connection, x, cliente.INT_SIZE)
+				self.send_int(self.connection, y, cliente.INT_SIZE)
+				res = self.receive_object(self.connection)
+				print("O resultado da divisão é:", res)
+
 
 #res = self.m.execute("+"+" "+str(x)+" "+str(y))
 			#print("O valor da operação somar é:", res)

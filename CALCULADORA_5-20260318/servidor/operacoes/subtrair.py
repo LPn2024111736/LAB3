@@ -5,6 +5,8 @@ class Subtrair:
         self.res = 0
 
 
-    def execute(self,x:float, y:float)->float:
-        self.res = self.x - self.y
+    def execute(self,x:int, y:int)->int:
+        self.x = x
+        self.y = y
+        self.res = x - self.y
         return self.res
