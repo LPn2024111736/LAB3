@@ -1,0 +1,21 @@
+Calculadora7
+
+I lado do cliente
+ a)
+basicamente se a operacao definida como  parametro  tiver no dicionario  ela  mostra a lista associada a ela se nao
+ela mostra  o dicionario  de operacoes
+ b)
+para nao interferir a  lista original (?)
+ c)
+basicamente  cria se uma copia do  dicionario  operacoes
+
+II lado do servidor
+1. feito
+2. feito
+ a) Basicamente iniciamos o objeto de listar objetos  na classe ProcessaCliente e ao cliente  iniciar ele é automaticamente
+ adicionado a lista de clientes e ativos sendo mostrado as duas listas no inicio de cada "run" mas quando  ele sai da
+conexao sai da lista dos clientes ativos.
+b) Quando o cliente na na conexao  ela  basicamente adiciona o cliente  a lista de  ativos e clientes e quando  ele sai
+basicamente sai da lista de ativos.
+c) A funcao da classe  BroadcastEmissor  é mandar  uma mensagem para todos  os clientes que estao  ligados a calculadora
+
